@@ -1,3 +1,6 @@
+<?php
+$title = "Dashboard";
+?>
 <!-- Page header -->
 <div class="page-header d-print-none text-white">
     <div class="container-xl">
@@ -5,7 +8,7 @@
             <div class="col">
                 <!-- Page pre-title -->
                 <h2 class="page-title">
-                    Dashboard
+                    <?= $title ?>
                 </h2>
             </div>
         </div>
@@ -118,9 +121,13 @@
                                             <!-- Download SVG icon from http://tabler.io/icons/icon/brand-facebook -->
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                                <path
-                                                    d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-tabler icons-tabler-outline icon-tabler-pencil-x">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                                <path d="M13.5 6.5l4 4" />
+                                                <path d="M22 22l-5 -5" />
+                                                <path d="M17 22l5 -5" />
                                             </svg>
                                         </span>
                                     </div>
@@ -139,44 +146,44 @@
                 </div>
             </div>
             <div class="col-12">
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Statistik Absensi Bulanan</h3>
-        </div>
-        <div class="card-body border-bottom py-3">
-            <div id="bar-chart"></div>
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    var options = {
-                        series: [{
-                            data: [990, 15, 13, 45]
-                        }],
-                        chart: {
-                            type: 'bar',
-                            height: 350
-                        },
-                        plotOptions: {
-                            bar: {
-                                borderRadius: 4,
-                                borderRadiusApplication: 'end',
-                                horizontal: true,
-                            }
-                        },
-                        dataLabels: {
-                            enabled: false
-                        },
-                        xaxis: {
-                            categories: ['Hadir', 'Sakit', 'Izin', 'Alpha']
-                        }
-                    };
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Statistik Absensi Bulanan</h3>
+                    </div>
+                    <div class="card-body border-bottom py-3">
+                        <div id="bar-chart"></div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                var options = {
+                                    series: [{
+                                        data: [990, 15, 13, 45]
+                                    }],
+                                    chart: {
+                                        type: 'bar',
+                                        height: 350
+                                    },
+                                    plotOptions: {
+                                        bar: {
+                                            borderRadius: 4,
+                                            borderRadiusApplication: 'end',
+                                            horizontal: true,
+                                        }
+                                    },
+                                    dataLabels: {
+                                        enabled: false
+                                    },
+                                    xaxis: {
+                                        categories: ['Hadir', 'Sakit', 'Izin', 'Alpha']
+                                    }
+                                };
 
-                    var chart = new ApexCharts(document.querySelector("#bar-chart"), options);
-                    chart.render();
-                });
-            </script>
-        </div>
-    </div>
-</div>
+                                var chart = new ApexCharts(document.querySelector("#bar-chart"), options);
+                                chart.render();
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>

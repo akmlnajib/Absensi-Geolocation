@@ -119,7 +119,7 @@
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
-                                    <a class="dropdown-item" href="./activity.html">
+                                    <a class="dropdown-item" href="./?route=jabatan">
                                         Jabatan
                                     </a>
                                     <a class="dropdown-item" href="./chat.html">
@@ -128,6 +128,7 @@
                                     </a>
                                 </div>
                             </div>
+                        </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"

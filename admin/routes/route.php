@@ -12,7 +12,16 @@ switch ($halaman) {
         include '../views/home.php';
         break;
     case 'jabatan':
-        include '../views/home.php';
+        include '../views/jabatan/index.php';
+        break;
+    case 'tambahJabatan':
+        include '../views/jabatan/create.php';
+        break;
+    case 'ubahJabatan':
+        include '../views/jabatan/edit.php';
+        break;
+    case 'hapusJabatan':
+        include '../views/jabatan/delete.php';
         break;
     case 'rekapHarian':
         include '../views/home.php';

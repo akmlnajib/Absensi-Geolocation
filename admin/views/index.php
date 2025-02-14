@@ -1,5 +1,7 @@
 <?php
 session_start();
+ob_start();
+global $title;
 if (!isset($_SESSION["login"])) {
 	header("Location: ../../auth/login.php?pesan=belum_login");
 } else if ($_SESSION["role"] != 'Admin') {
@@ -75,30 +77,10 @@ if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil') {
 	<script src="<?= base_url('assets/js/tabler.min.js?1738096685') ?>" defer></script>
 	<script src="<?= base_url('assets/js/demo.min.js?1738096685') ?>" defer></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-	<?php if (isset($_SESSION["berhasil"])): ?>
-		<script>
-			Swal.fire({
-				icon: "success",
-				title: "Anda berhasil login",
-				text: "<?= htmlspecialchars($_SESSION["berhasil"]) ?>"
-			});
-		</script>
-		<?php unset($_SESSION["berhasil"]); ?>
-	<?php endif; ?>
-
-	<?php if (isset($_SESSION["gagal"])): ?>
-		<script>
-			Swal.fire({
-				icon: "error",
-				title: "Oops...",
-				text: "<?= htmlspecialchars($_SESSION["gagal"]) ?>"
-			});
-		</script>
-		<?php unset($_SESSION["gagal"]); ?>
-	<?php endif; ?>
-
-
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<?php
+		include "./layouts/script.php";
+	?>
 </body>
 
 </html>
