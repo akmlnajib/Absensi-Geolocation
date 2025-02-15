@@ -29,6 +29,21 @@ switch ($halaman) {
     case 'rekapBulanan':
         include '../views/home.php';
         break;
+    case 'lokasi':
+        include '../views/lokasi/index.php';
+        break;
+    case 'lokasiTambah':
+        include '../views/lokasi/create.php';
+        break;
+    case 'lokasiUbah':
+        include '../views/lokasi/edit.php';
+        break;
+    case 'lokasiDetail':
+        include '../views/lokasi/detail.php';
+        break;
+    case 'lokasiHapus':
+        include '../views/lokasi/delete.php';
+        break;
     case 'kH':
         include '../views/home.php';
         break;

@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
                         </div>
                     </div>
                     <div class="card-footer text-end">
-                        <button type="submit" class="btn btn-green" name="submit">
+                        <button type="submit" class="btn btn-dark" name="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round"
@@ -81,6 +81,7 @@ if (isset($_POST['submit'])) {
                             </svg>
                             Simpan
                         </button>
+                        <a href="./?route=jabatan" class="btn btn-dark">Batal</a>
                     </div>
                 </form>
             </div>

@@ -122,8 +122,8 @@
                                     <a class="dropdown-item" href="./?route=jabatan">
                                         Jabatan
                                     </a>
-                                    <a class="dropdown-item" href="./chat.html">
-                                        POS Jaga
+                                    <a class="dropdown-item" href="./?route=lokasi">
+                                        Lokasi
                                         <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
                                     </a>
                                 </div>
