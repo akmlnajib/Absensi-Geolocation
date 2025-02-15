@@ -6,24 +6,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipe_lokasi = trim($_POST['tipe_lokasi']);
     $latitude = trim($_POST['lantitude']);
     $longitude = trim($_POST['longitude']);
+    $url_lokasi = trim($_POST['url_lokasi']);
     $radius = trim($_POST['radius']);
     $zona_waktu = "WIB";
     $jam_masuk = "09:00:00";
     $jam_pulang = "17:00:00";
 
     // Validasi input tidak boleh kosong
-    if (empty($nama_lokasi) || empty($alamat_lokasi) || empty($tipe_lokasi) || empty($latitude) || empty($longitude) || empty($radius) || empty($jam_masuk) || empty($jam_pulang)) {
+    if (empty($nama_lokasi) || empty($alamat_lokasi) || empty($tipe_lokasi) || empty($latitude) || empty($longitude) || empty($url_lokasi) || empty($radius) || empty($jam_masuk) || empty($jam_pulang)) {
         $_SESSION['error'] = "Semua kolom wajib diisi.";
         header("Location: ./?route=lokasiTambah");
         exit;
     }
 
     // Query dengan prepared statement
-    $query = "INSERT INTO tb_lokasi (nama_lokasi, alamat_lokasi, tipe_lokasi, latitude, longitude, radius, zona_waktu, jam_masuk, jam_pulang) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO tb_lokasi (nama_lokasi, alamat_lokasi, tipe_lokasi, latitude, longitude, url_lokasi, radius, zona_waktu, jam_masuk, jam_pulang) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "sssssssss", $nama_lokasi, $alamat_lokasi, $tipe_lokasi, $latitude, $longitude, $radius, $zona_waktu, $jam_masuk, $jam_pulang);
+    mysqli_stmt_bind_param($stmt, "ssssssssss", $nama_lokasi, $alamat_lokasi, $tipe_lokasi, $latitude, $longitude, $url_lokasi, $radius, $zona_waktu, $jam_masuk, $jam_pulang);
 
     if (mysqli_stmt_execute($stmt)) {
         $_SESSION['success'] = "Data lokasi berhasil ditambahkan!";
@@ -97,6 +98,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="mb-3">
                                     <label class="form-label">Longitude</label>
                                     <input type="text" class="form-control" name="longitude" placeholder="102.29123023">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">URL Lokasi</label>
+                                    <input type="text" class="form-control" name="url_lokasi" placeholder="102.29123023">
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-4">

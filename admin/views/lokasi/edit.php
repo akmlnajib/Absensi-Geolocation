@@ -29,13 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipe_lokasi = trim($_POST['tipe_lokasi']);
     $latitude = trim($_POST['latitude']);
     $longitude = trim($_POST['longitude']);
+    $url_lokasi = trim($_POST['url_lokasi']);
     $radius = trim($_POST['radius']);
     $zona_waktu = "WIB";
     $jam_masuk = trim($_POST['jam_masuk']);
     $jam_pulang = trim($_POST['jam_pulang']);
 
     // Validasi input tidak boleh kosong
-    if (empty($nama_lokasi) || empty($alamat_lokasi) || empty($tipe_lokasi) || empty($latitude) || empty($longitude) || empty($radius) || empty($jam_masuk) || empty($jam_pulang)) {
+    if (empty($nama_lokasi) || empty($alamat_lokasi) || empty($tipe_lokasi) || empty($latitude) || empty($longitude) || empty($url_lokasi) || empty($radius) || empty($jam_masuk) || empty($jam_pulang)) {
         $_SESSION['error'] = "Semua kolom wajib diisi.";
         header("Location: ./?route=lokasiUbah&id=$id_lokasi");
         exit;
@@ -43,11 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Query update dengan prepared statement
     $query = "UPDATE tb_lokasi 
-              SET nama_lokasi = ?, alamat_lokasi = ?, tipe_lokasi = ?, latitude = ?, longitude = ?, radius = ?, zona_waktu = ?, jam_masuk = ?, jam_pulang = ? 
+              SET nama_lokasi = ?, alamat_lokasi = ?, tipe_lokasi = ?, latitude = ?, longitude = ?, url_lokasi = ?, radius = ?, zona_waktu = ?, jam_masuk = ?, jam_pulang = ? 
               WHERE id = ?";
     
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "sssssssssi", $nama_lokasi, $alamat_lokasi, $tipe_lokasi, $latitude, $longitude, $radius, $zona_waktu, $jam_masuk, $jam_pulang, $id);
+    mysqli_stmt_bind_param($stmt, "ssssssssssi", $nama_lokasi, $alamat_lokasi, $tipe_lokasi, $latitude, $longitude,  $url_lokasi, $radius, $zona_waktu, $jam_masuk, $jam_pulang, $id);
 
     if (mysqli_stmt_execute($stmt)) {
         $_SESSION['success'] = "Data lokasi berhasil diperbarui!";
@@ -113,6 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="mb-3">
                                     <label class="form-label">Longitude</label>
                                     <input type="text" class="form-control" name="longitude" value="<?= htmlspecialchars($data['longitude']) ?>" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">URL Lokasi</label>
+                                    <input type="text" class="form-control" name="url_lokasi" value="<?= htmlspecialchars($data['url_lokasi']) ?>" required>
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-4">
