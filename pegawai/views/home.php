@@ -59,7 +59,7 @@
                                     <div id="detik_masuk"></div>
                                 </div>
                                 <center>
-                                    <form action="./?absensiMasuk" method="POST">
+                                    <form action="./?route=absensiMasuk" method="POST">
                                         <div class="col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <select id="lokasi_select_masuk" name="nama_lokasi"
@@ -86,9 +86,9 @@
                                                     name="latitude_pegawai_masuk">
                                                 <input type="text" id="longitude_pegawai_masuk"
                                                     name="longitude_pegawai_masuk">
-                                                <input type="text" id="latitude_masuk" name="latitude">
-                                                <input type="text" id="longitude_masuk" name="longitude">
-                                                <input type="text" id="radius_masuk" name="radius">
+                                                <input type="text" id="latitude_masuk" name="latitude_masuk">
+                                                <input type="text" id="longitude_masuk" name="longitude_masuk">
+                                                <input type="text" id="radius_masuk" name="radius_masuk">
                                                 <input type="text" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
                                                 <?php
                                                 date_default_timezone_set('Asia/Jakarta');
@@ -98,7 +98,7 @@
 
                                             </div>
                                         </div>
-                                        <a href="#" class="btn btn-dark">Absen Masuk</a>
+                                        <button type="submit" name="create_masuk" class="btn btn-dark">Absen Masuk</button>
                                     </form>
                                 </center>
                                 </p>
@@ -237,7 +237,6 @@
             document.getElementById('latitude_masuk').value = lokasiData[lokasi].latitude;
             document.getElementById('longitude_masuk').value = lokasiData[lokasi].longitude;
             document.getElementById('radius_masuk').value = lokasiData[lokasi].radius;
-            document.getElementById('zona_waktu_masuk').value = lokasiData[lokasi].zona_waktu;
         }
     });
     document.getElementById('lokasi_select_keluar').addEventListener('change', function () {
@@ -247,7 +246,6 @@
             document.getElementById('latitude_keluar').value = lokasiData[lokasi].latitude;
             document.getElementById('longitude_keluar').value = lokasiData[lokasi].longitude;
             document.getElementById('radius_keluar').value = lokasiData[lokasi].radius;
-            document.getElementById('zona_waktu_keluar').value = lokasiData[lokasi].zona_waktu;
         }
     });
 </script>
