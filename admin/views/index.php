@@ -1,7 +1,6 @@
 <?php
 session_start();
 ob_start();
-global $title;
 if (!isset($_SESSION["login"])) {
 	header("Location: ../../auth/login.php?pesan=belum_login");
 } else if ($_SESSION["role"] != 'Admin') {
@@ -14,7 +13,7 @@ if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil') {
 	$id = $_SESSION['id'] ?? null;
 
 	if ($id) {
-		$stmt = $conn->prepare("SELECT nama FROM pegawai WHERE id = ?");
+		$stmt = $conn->prepare("SELECT nama, jabatan FROM pegawai WHERE id = ?");
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 		$result = $stmt->get_result();

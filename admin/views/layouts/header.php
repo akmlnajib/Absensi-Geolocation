@@ -38,8 +38,8 @@
                     <span class="avatar avatar-sm"
                         style="background-image: url(https://cdn3d.iconscout.com/3d/premium/thumb/astronaut-avatar-3d-icon-download-in-png-blend-fbx-gltf-file-formats--profile-character-pack-avatars-icons-5187864.png?f=webp)"></span>
                     <div class="d-none d-xl-block ps-2">
-                        <div>Akmal Najib</div>
-                        <div class="mt-1 small text-secondary">Fullstack</div>
+                        <div><?= $pegawai['nama']?></div>
+                        <div class="mt-1 small text-secondary"><?= $pegawai['jabatan']?></div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" data-bs-theme="light">

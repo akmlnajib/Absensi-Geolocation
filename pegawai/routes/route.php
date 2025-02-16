@@ -8,11 +8,11 @@ switch ($halaman) {
     case 'home':
         include '../views/home.php';
         break;
-    case 'petugas':
-        include '../views/home.php';
+    case 'absensiMasuk':
+        include '../views/absen/create_in.php';
         break;
-    case 'jabatan':
-        include '../views/home.php';
+    case 'absensiKeluar':
+        include '../views/absen/create_out.php';
         break;
     case 'rekapHarian':
         include '../views/home.php';

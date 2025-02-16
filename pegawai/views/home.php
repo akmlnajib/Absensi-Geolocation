@@ -1,3 +1,24 @@
+<?php
+
+?>
+<style>
+    .parent_date {
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        font-size: 20px;
+        text-align: center;
+        font-weight: bold;
+        justify-content: center;
+    }
+
+    .parent_time {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto;
+        font-size: 20px;
+        text-align: center;
+        justify-content: center;
+    }
+</style>
 <!-- Page header -->
 <div class="page-header d-print-none text-white">
     <div class="container-xl">
@@ -5,7 +26,7 @@
             <div class="col">
                 <!-- Page pre-title -->
                 <h2 class="page-title">
-                    Navbar overlap layout
+                    Dashboard
                 </h2>
             </div>
         </div>
@@ -17,119 +38,216 @@
         <div class="row row-deck row-cards">
             <div class="col-12">
                 <div class="row row-cards">
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card card-sm">
+                    <div class="col-sm-2 col-lg-3">
+                    </div>
+                    <div class="col-sm-2 col-lg-6">
+                        <div class="card">
                             <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <span class="bg-primary text-white avatar">
-                                            <!-- Download SVG icon from http://tabler.io/icons/icon/currency-dollar -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                                <path
-                                                    d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" />
-                                                <path d="M12 3v3m0 12v3" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <div class="col">
-                                        <div class="font-weight-medium">
-                                            132 Sales
-                                        </div>
-                                        <div class="text-secondary">
-                                            12 waiting payments
-                                        </div>
-                                    </div>
+                                <h3 class="card-title text-center">Absensi</h3>
+
+                                <p class="text-secondary">
+                                <div class="parent_date">
+                                    <div id="tanggal_masuk" class="me-2"></div>
+                                    <div id="bulan_masuk" class="me-2"></div>
+                                    <div id="tahun_masuk" class="me-2"></div>
                                 </div>
+                                <div class="parent_time">
+                                    <div id="jam_masuk"></div>
+                                    <div>:</div>
+                                    <div id="menit_masuk"></div>
+                                    <div>:</div>
+                                    <div id="detik_masuk"></div>
+                                </div>
+                                <center>
+                                    <form action="./?absensiMasuk" method="POST">
+                                        <div class="col-sm-6 col-md-4">
+                                            <div class="mb-3">
+                                                <select id="lokasi_select_masuk" name="nama_lokasi"
+                                                    class="form-control form-select">
+                                                    <option value="">Pilih Lokasi Absensi</option>
+                                                    <?php
+                                                    $get_query = mysqli_query($conn, "SELECT * FROM tb_lokasi");
+                                                    $lokasi_data = [];
+                                                    while ($row = mysqli_fetch_assoc($get_query)) {
+                                                        $lokasi_data[$row['nama_lokasi']] = [
+                                                            'latitude' => $row['latitude'],
+                                                            'longitude' => $row['longitude'],
+                                                            'radius' => $row['radius'],
+                                                        ];
+                                                        ?>
+                                                        <option value="<?= $row['nama_lokasi']; ?>">
+                                                            <?= $row['nama_lokasi']; ?>
+                                                        </option>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                                <input type="text" id="latitude_pegawai_masuk"
+                                                    name="latitude_pegawai_masuk">
+                                                <input type="text" id="longitude_pegawai_masuk"
+                                                    name="longitude_pegawai_masuk">
+                                                <input type="text" id="latitude_masuk" name="latitude">
+                                                <input type="text" id="longitude_masuk" name="longitude">
+                                                <input type="text" id="radius_masuk" name="radius">
+                                                <input type="text" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
+                                                <?php
+                                                date_default_timezone_set('Asia/Jakarta');
+                                                $jamSekarang = date('H:i:s');
+                                                ?>
+                                                <input type="text" name="jam_masuk" value="<?= $jamSekarang ?>">
+
+                                            </div>
+                                        </div>
+                                        <a href="#" class="btn btn-dark">Absen Masuk</a>
+                                    </form>
+                                </center>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title text-center">Absensi</h3>
+
+                                <p class="text-secondary">
+                                <div class="parent_date">
+                                    <div id="tanggal_keluar" class="me-2"></div>
+                                    <div id="bulan_keluar" class="me-2"></div>
+                                    <div id="tahun_keluar" class="me-2"></div>
+                                </div>
+                                <div class="parent_time">
+                                    <div id="jam_keluar"></div>
+                                    <div>:</div>
+                                    <div id="menit_keluar"></div>
+                                    <div>:</div>
+                                    <div id="detik_keluar"></div>
+                                </div>
+                                <center>
+                                    <form action="./?absensiKeluar" method="POST">
+                                        <div class="col-sm-6 col-md-4">
+                                            <div class="mb-3">
+                                                <select id="lokasi_select_keluar" name="nama_lokasi"
+                                                    class="form-control form-select">
+                                                    <option value="">Pilih Lokasi Absensi</option>
+                                                    <?php
+                                                    $get_query = mysqli_query($conn, "SELECT * FROM tb_lokasi");
+                                                    $lokasi_data = [];
+                                                    while ($row = mysqli_fetch_assoc($get_query)) {
+                                                        $lokasi_data[$row['nama_lokasi']] = [
+                                                            'latitude' => $row['latitude'],
+                                                            'longitude' => $row['longitude'],
+                                                            'radius' => $row['radius'],
+                                                            'zona_waktu' => $row['zona_waktu']
+                                                        ];
+                                                        ?>
+                                                        <option value="<?= $row['nama_lokasi']; ?>">
+                                                            <?= $row['nama_lokasi']; ?>
+                                                        </option>
+                                                        <?php
+                                                    }
+                                                    ?>
+                                                </select>
+                                                <input type="text" id="latitude_pegawai_keluar"
+                                                    name="latitude_pegawai_keluar">
+                                                <input type="text" id="longitude_pegawai_keluar"
+                                                    name="longitude_pegawai_keluar">
+                                                <input type="text" id="latitude_keluar" name="latitude">
+                                                <input type="text" id="longitude_keluar" name="longitude">
+                                                <input type="text" id="radius_keluar" name="radius">
+                                                <input type="text" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
+                                                <?php
+                                                date_default_timezone_set('Asia/Jakarta');
+                                                $jamSekarang = date('H:i:s');
+                                                ?>
+                                                <input type="text" name="jam_masuk" value="<?= $jamSekarang ?>">
+                                            </div>
+                                        </div>
+                                        <a href="#" class="btn btn-dark">Absen Keluar</a>
+                                    </form>
+                                </center>
+                                </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card card-sm">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <span class="bg-green text-white avatar">
-                                            <!-- Download SVG icon from http://tabler.io/icons/icon/shopping-cart -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                                <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                                                <path d="M17 17h-11v-14h-2" />
-                                                <path d="M6 5l14 1l-1 7h-13" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <div class="col">
-                                        <div class="font-weight-medium">
-                                            78 Orders
-                                        </div>
-                                        <div class="text-secondary">
-                                            32 shipped
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card card-sm">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <span class="bg-x text-white avatar">
-                                            <!-- Download SVG icon from http://tabler.io/icons/icon/brand-x -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                                <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-                                                <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <div class="col">
-                                        <div class="font-weight-medium">
-                                            623 Shares
-                                        </div>
-                                        <div class="text-secondary">
-                                            16 today
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div class="card card-sm">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-auto">
-                                        <span class="bg-facebook text-white avatar">
-                                            <!-- Download SVG icon from http://tabler.io/icons/icon/brand-facebook -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                                <path
-                                                    d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <div class="col">
-                                        <div class="font-weight-medium">
-                                            132 Likes
-                                        </div>
-                                        <div class="text-secondary">
-                                            21 today
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-sm-2 col-lg-3">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+<script>
+    const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+    function waktuMasuk() {
+        const waktu = new Date();
+
+        document.getElementById("tanggal_masuk").textContent = waktu.getDate();
+        document.getElementById("bulan_masuk").textContent = namaBulan[waktu.getMonth()];
+        document.getElementById("tahun_masuk").textContent = waktu.getFullYear();
+        document.getElementById("jam_masuk").textContent = waktu.getHours().toString().padStart(2, '0');
+        document.getElementById("menit_masuk").textContent = waktu.getMinutes().toString().padStart(2, '0');
+        document.getElementById("detik_masuk").textContent = waktu.getSeconds().toString().padStart(2, '0');
+
+        setTimeout(waktuMasuk, 1000);
+    }
+
+    waktuMasuk();
+
+    function waktuKeluar() {
+        const waktu = new Date();
+
+        document.getElementById("tanggal_keluar").textContent = waktu.getDate();
+        document.getElementById("bulan_keluar").textContent = namaBulan[waktu.getMonth()];
+        document.getElementById("tahun_keluar").textContent = waktu.getFullYear();
+        document.getElementById("jam_keluar").textContent = waktu.getHours().toString().padStart(2, '0');
+        document.getElementById("menit_keluar").textContent = waktu.getMinutes().toString().padStart(2, '0');
+        document.getElementById("detik_keluar").textContent = waktu.getSeconds().toString().padStart(2, '0');
+
+        setTimeout(waktuKeluar, 1000);
+    }
+
+    waktuKeluar();
+
+    geoLocation();
+    function geoLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert("Browser tidak mendukung geolocation");
+        }
+    }
+
+    function showPosition(position) {
+        $('#latitude_pegawai_masuk').val(position.coords.latitude);
+        $('#longitude_pegawai_masuk').val(position.coords.longitude);
+        $('#latitude_pegawai_keluar').val(position.coords.latitude);
+        $('#longitude_pegawai_keluar').val(position.coords.longitude);
+    }
+</script>
+<script>
+    // Data lokasi dalam bentuk JavaScript Object
+    const lokasiData = <?= json_encode($lokasi_data) ?>;
+
+    // Event listener untuk perubahan pada select lokasi
+    document.getElementById('lokasi_select_masuk').addEventListener('change', function () {
+        const lokasi = this.value;
+
+        if (lokasi in lokasiData) {
+            document.getElementById('latitude_masuk').value = lokasiData[lokasi].latitude;
+            document.getElementById('longitude_masuk').value = lokasiData[lokasi].longitude;
+            document.getElementById('radius_masuk').value = lokasiData[lokasi].radius;
+            document.getElementById('zona_waktu_masuk').value = lokasiData[lokasi].zona_waktu;
+        }
+    });
+    document.getElementById('lokasi_select_keluar').addEventListener('change', function () {
+        const lokasi = this.value;
+
+        if (lokasi in lokasiData) {
+            document.getElementById('latitude_keluar').value = lokasiData[lokasi].latitude;
+            document.getElementById('longitude_keluar').value = lokasiData[lokasi].longitude;
+            document.getElementById('radius_keluar').value = lokasiData[lokasi].radius;
+            document.getElementById('zona_waktu_keluar').value = lokasiData[lokasi].zona_waktu;
+        }
+    });
+</script>

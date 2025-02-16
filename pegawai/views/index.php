@@ -1,6 +1,6 @@
 <?php
-
 session_start();
+ob_start();
 if (!isset($_SESSION["login"])) {
 	header("Location: ../../auth/login.php?pesan=belum_login");
 } else if ($_SESSION["role"] != 'Pegawai') {
@@ -9,6 +9,23 @@ if (!isset($_SESSION["login"])) {
 
 require_once('../../config.php');
 
+if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil') {
+	$id = $_SESSION['id'] ?? null;
+
+	if ($id) {
+		$stmt = $conn->prepare("SELECT nama, jabatan FROM pegawai WHERE id = ?");
+		$stmt->bind_param("i", $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$pegawai = $result->fetch_assoc();
+
+		if ($pegawai) {
+			$_SESSION['berhasil'] = "Selamat datang, " . htmlspecialchars($pegawai['nama']);
+		}
+
+		$stmt->close();
+	}
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -29,27 +46,22 @@ require_once('../../config.php');
 
 <body>
 	<script src="<?= base_url('assets/js/demo-theme.min.js?1738096685') ?>"></script>
+
 	<div class="page">
 		<?php
 		include "./layouts/header.php";
 		?>
 		<div class="page-wrapper">
-
 			<?php
 			include "../routes/route.php";
 
 			if (isset($_GET['pesan'])) {
-				if ($_GET['pesan'] == 'berhasil') {
-					$_SESSION['berhasil'] = "Anda berhasil login";
-				}
-			}
-			
-			if (isset($_GET['pesan'])) {
-				if ($_GET['pesan'] == 'tolak_akses_admin') {
+				if ($_GET['pesan'] == 'tolak_akses') {
 					$_SESSION['gagal'] = "403 Halaman Tidak dapat diakses";
 				}
 			}
 			?>
+
 			<?php
 			include "./layouts/footer.php";
 			?>
@@ -63,31 +75,11 @@ require_once('../../config.php');
 	<!-- Tabler Core -->
 	<script src="<?= base_url('assets/js/tabler.min.js?1738096685') ?>" defer></script>
 	<script src="<?= base_url('assets/js/demo.min.js?1738096685') ?>" defer></script>
-
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<?php if (isset($_SESSION["berhasil"])) { ?>
-		<script>
-			Swal.fire({
-				icon: "success",
-				title: "Selamat!",
-				text: "<?= $_SESSION["berhasil"]; ?>"
-			});
-		</script>
-
-		<?php unset($_SESSION["berhasil"]); ?>
-	<?php } ?>
-
-	<?php if (isset($_SESSION["gagal"])) { ?>
-		<script>
-			Swal.fire({
-				icon: "error",
-				title: "Oops...",
-				text: "<?= $_SESSION["gagal"]; ?>"
-			});
-		</script>
-
-		<?php unset($_SESSION["gagal"]); ?>
-	<?php } ?>
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<?php
+		include "./layouts/script.php";
+	?>
 </body>
 
 </html>
