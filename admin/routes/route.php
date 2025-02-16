@@ -44,6 +44,21 @@ switch ($halaman) {
     case 'lokasiHapus':
         include '../views/lokasi/delete.php';
         break;
+    case 'pegawai':
+        include '../views/pegawai/index.php';
+        break;
+    case 'tambahPegawai':
+        include '../views/pegawai/create.php';
+        break;
+    case 'ubahPegawai':
+        include '../views/pegawai/edit.php';
+        break;
+    case 'detailPegawai':
+        include '../views/pegawai/detail.php';
+        break;
+    case 'hapusPegawai':
+        include '../views/pegawai/delete.php';
+        break;
     case 'kH':
         include '../views/home.php';
         break;
