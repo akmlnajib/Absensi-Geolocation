@@ -67,6 +67,13 @@
                                                     <option value="">Pilih Lokasi Absensi</option>
                                                     <?php
                                                     $get_query = mysqli_query($conn, "SELECT * FROM tb_lokasi");
+                                                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                        if (empty($_POST['nama_lokasi'])) {
+                                                            $_SESSION['gagal'] = "Pilih lokasi terlebih dahulu";
+                                                            header("Location: ./?route=home");
+                                                            exit;
+                                                        }
+                                                    }
                                                     $lokasi_data = [];
                                                     while ($row = mysqli_fetch_assoc($get_query)) {
                                                         $lokasi_data[$row['nama_lokasi']] = [
@@ -82,23 +89,23 @@
                                                     }
                                                     ?>
                                                 </select>
-                                                <input type="text" id="latitude_pegawai_masuk"
+                                                <input type="hidden" id="latitude_pegawai_masuk"
                                                     name="latitude_pegawai_masuk">
-                                                <input type="text" id="longitude_pegawai_masuk"
+                                                <input type="hidden" id="longitude_pegawai_masuk"
                                                     name="longitude_pegawai_masuk">
-                                                <input type="text" id="latitude_masuk" name="latitude_masuk">
-                                                <input type="text" id="longitude_masuk" name="longitude_masuk">
-                                                <input type="text" id="radius_masuk" name="radius_masuk">
-                                                <input type="text" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
+                                                <input type="hidden" id="latitude_masuk" name="latitude_masuk">
+                                                <input type="hidden" id="longitude_masuk" name="longitude_masuk">
+                                                <input type="hidden" id="radius_masuk" name="radius_masuk">
+                                                <input type="hidden" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
                                                 <?php
                                                 date_default_timezone_set('Asia/Jakarta');
                                                 $jamSekarang = date('H:i:s');
                                                 ?>
-                                                <input type="text" name="jam_masuk" value="<?= $jamSekarang ?>">
+                                                <input type="hidden" name="jam_masuk" value="<?= $jamSekarang ?>">
 
                                             </div>
                                         </div>
-                                        <button type="submit" name="create_masuk" class="btn btn-dark">Absen Masuk</button>
+                                        <button type="submit"  name="create_masuk" class="btn btn-dark">Absen Masuk</button>
                                     </form>
                                 </center>
                                 </p>

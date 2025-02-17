@@ -1,13 +1,22 @@
 <?php
 
+
 if (isset($_POST['create_masuk'])) {
-    $latitude_pegawai = $_POST['latitude_pegawai_masuk'];
-    $longitude_pegawai = $_POST['longitude_pegawai_masuk'];
-    $latitude_masuk = $_POST['latitude_masuk'];
-    $longitude_masuk = $_POST['longitude_masuk'];
-    $radius_masuk = $_POST['radius_masuk'];
-    $tanggal_masuk = $_POST['tanggal_masuk'];
-    $jam_masuk = $_POST['jam_masuk'];
+    // Validasi lokasi harus dipilih
+    if (empty(trim($_POST['nama_lokasi']))) {
+        $_SESSION['gagal'] = "Pilih lokasi terlebih dahulu!";
+        header("Location: ./?route=home");
+        exit;
+    }
+
+    // Ambil data dari form
+    $latitude_pegawai = $_POST['latitude_pegawai_masuk'] ?? null;
+    $longitude_pegawai = $_POST['longitude_pegawai_masuk'] ?? null;
+    $latitude_masuk = $_POST['latitude_masuk'] ?? null;
+    $longitude_masuk = $_POST['longitude_masuk'] ?? null;
+    $radius_masuk = $_POST['radius_masuk'] ?? null;
+    $tanggal_masuk = $_POST['tanggal_masuk'] ?? null;
+    $jam_masuk = $_POST['jam_masuk'] ?? null;
 }
 
 // Konversi derajat ke radian
@@ -29,7 +38,14 @@ $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
 // Radius bumi dalam meter
 $earthRadius = 6371000;
-$m = $earthRadius * $c;
+$m = round($earthRadius * $c);
+
+
+if ($m > $radius_masuk){
+    $_SESSION['gagal'] = "Lokasi tidak sesuai";
+    header("Location: ./?route=home");
+    exit;
+}
 ?>
 
 <div class="card"><?= "Jarak: " . $m . " meter";?></div>
