@@ -32,6 +32,7 @@
         </div>
     </div>
 </div>
+
 <!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
@@ -40,7 +41,7 @@
                 <div class="row row-cards">
                     <div class="col-sm-2 col-lg-3">
                     </div>
-                    <div class="col-sm-2 col-lg-6">
+                    <div class="col-sm-6 col-lg-6">
                         <div class="card">
                             <div class="card-body">
                                 <h3 class="card-title text-center">Absensi</h3>
@@ -89,19 +90,19 @@
                                                     }
                                                     ?>
                                                 </select>
-                                                <input type="hidden" id="latitude_pegawai_masuk"
+                                                <input type="text" id="latitude_pegawai_masuk"
                                                     name="latitude_pegawai_masuk">
-                                                <input type="hidden" id="longitude_pegawai_masuk"
+                                                <input type="text" id="longitude_pegawai_masuk"
                                                     name="longitude_pegawai_masuk">
-                                                <input type="hidden" id="latitude_masuk" name="latitude_masuk">
-                                                <input type="hidden" id="longitude_masuk" name="longitude_masuk">
-                                                <input type="hidden" id="radius_masuk" name="radius_masuk">
-                                                <input type="hidden" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
+                                                <input type="text" id="latitude_masuk" name="latitude_masuk">
+                                                <input type="text" id="longitude_masuk" name="longitude_masuk">
+                                                <input type="text" id="radius_masuk" name="radius_masuk">
+                                                <input type="text" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
                                                 <?php
                                                 date_default_timezone_set('Asia/Jakarta');
                                                 $jamSekarang = date('H:i:s');
                                                 ?>
-                                                <input type="hidden" name="jam_masuk" value="<?= $jamSekarang ?>">
+                                                <input type="text" name="jam_masuk" value="<?= $jamSekarang ?>">
 
                                             </div>
                                         </div>
@@ -255,4 +256,6 @@
             document.getElementById('radius_keluar').value = lokasiData[lokasi].radius;
         }
     });
+    
+
 </script>
