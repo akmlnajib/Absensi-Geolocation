@@ -1,16 +1,8 @@
 <?php 
-// Validasi input
-if (!isset($_POST['photo'], $_POST['id_pegawai'], $_POST['nama_lokasi'], $_POST['tanggal_masuk'], $_POST['jam_masuk'])) {
-    $_SESSION['error'] = "Data tidak lengkap!";
-    header("Location: ./?route=home");
-    exit;
-}
-
 $file_foto = $_POST['photo'];
-$id_pegawai = mysqli_real_escape_string($conn, $_POST['id_pegawai']);
-$nama_lokasi = mysqli_real_escape_string($conn, $_POST['nama_lokasi']);
-$tanggal_masuk = mysqli_real_escape_string($conn, $_POST['tanggal_masuk']);
-$jam_masuk = mysqli_real_escape_string($conn, $_POST['jam_masuk']);
+$id_pegawai = $_POST['id'];
+$tanggal_masuk = $_POST['tanggal_masuk'];
+$jam_masuk = $_POST['jam_masuk'];
 
 // Pastikan direktori penyimpanan gambar ada
 $directory = 'foto/';
@@ -33,8 +25,8 @@ if (file_put_contents($nama_file, $data) === false) {
 }
 
 // Simpan ke database dengan prepared statement untuk keamanan
-$stmt = mysqli_prepare($conn, "INSERT INTO presensi (id_pegawai, lokasi_absensi, tanggal_masuk, jam_masuk, foto_masuk) VALUES (?, ?, ?, ?, ?)");
-mysqli_stmt_bind_param($stmt, "issss", $id_pegawai, $nama_lokasi, $tanggal_masuk, $jam_masuk, $file);
+$stmt = mysqli_prepare($conn, "INSERT INTO presensi (id_pegawai, tanggal_masuk, jam_masuk, foto_masuk) VALUES (?, ?, ?, ?)");
+mysqli_stmt_bind_param($stmt, "isss", $id_pegawai, $tanggal_masuk, $jam_masuk, $file);
 
 if (mysqli_stmt_execute($stmt)) {
     $_SESSION['success'] = "Kehadiran berhasil dicatat";

@@ -38,8 +38,8 @@
                     <span class="avatar avatar-sm"
                         style="background-image: url(https://img.lovepik.com/free-png/20210919/lovepik-astronaut-png-image_401003120_wh1200.png)"></span>
                     <div class="d-none d-xl-block ps-2">
-                        <div>Paweł Kuna</div>
-                        <div class="mt-1 small text-secondary">UI Designer</div>
+                        <div><?= $_SESSION['nama']?></div>
+                        <div class="mt-1 small text-secondary"><?= $_SESSION['jabatan']?></div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" data-bs-theme="light">

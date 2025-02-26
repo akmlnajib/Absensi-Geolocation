@@ -3,18 +3,19 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <?php
 
-if (isset($_POST['create_masuk'])) {
+if (isset($_POST['create_keluar'])) {
+    $id = $_POST['id'];
     $latitude_pegawai_masuk = $_POST['latitude_pegawai_masuk'];
     $longitude_pegawai_masuk = $_POST['longitude_pegawai_masuk'];
     $latitude_kantor = $_POST['latitude_kantor'];
     $longitude_kantor = $_POST['longitude_kantor'];
     $radius = $_POST['radius'];
-    $jam_masuk = $_POST['jam_masuk'];
-    $tanggal_masuk = $_POST['tanggal_masuk'];
+    $jam_keluar = $_POST['jam_keluar'];
+    $tanggal_keluar = $_POST['tanggal_keluar'];
 }
 
 
-$earth_radius = 6378000; // Radius bumi dalam meter
+$earth_radius = 6371000; // Radius bumi dalam meter
 
 $lat1 = deg2rad($latitude_pegawai_masuk);
 $lon1 = deg2rad($longitude_pegawai_masuk);
@@ -23,15 +24,14 @@ $lon2 = deg2rad($longitude_kantor);
 
 $dlat = $lat2 - $lat1;
 $dlon = $lon2 - $lon1;
-$b = sin($dlat / 2);
 
-$a = $b * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlon / 2) * sin($dlon / 2);
+$a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlon / 2) * sin($dlon / 2);
 $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
 $m = $earth_radius * $c; // Jarak dalam meter
 
 if ($m > $radius) {
-    $_SESSION['error'] = "Jarak anda melebihi batas radius!";
+    $_SESSION['error'] = "Jarak anda melebihi batas radius $radius";
     header("Location: ./?route=home");
     exit;
 } else {
@@ -42,7 +42,7 @@ if ($m > $radius) {
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
-                    <h2 class="page-title"><?= $dlon ?></h2>
+                    <h2 class="page-title"><?= $c * $earth_radius ?></h2>
                 </div>
             </div>
         </div>
@@ -58,9 +58,10 @@ if ($m > $radius) {
                             <div class="card">
                                 <div class="card-body text-center">
                                     <center>
-                                        <input type="text" id="id" value="<?= $_SESSION['id'] ?>">
-                                        <input type="text" id="tanggal_masuk" value="<?= $tanggal_masuk ?>">
-                                        <input type="text" id="jam_masuk" value="<?= $jam_masuk ?>">
+                                        <input type="text" id="id_pegawai" value="<?= $_SESSION['id'] ?>">
+                                        <input type="text" id="id" value="<?= $id ?>">
+                                        <input type="text" id="tanggal_keluar" value="<?= $tanggal_keluar ?>">
+                                        <input type="text" id="jam_keluar" value="<?= $jam_keluar ?>">
                                         <div id="my_camera" style="width:320px; height:240px;"></div>
                                         <div id="my_result"></div>
                                         <button class="btn btn-dark" id="take">Masuk</button>
@@ -78,8 +79,9 @@ if ($m > $radius) {
         Webcam.attach('#my_camera');
         
         let id = document.getElementById('id').value;
-        let tanggal_masuk = document.getElementById('tanggal_masuk').value;
-        let jam_masuk = document.getElementById('jam_masuk').value;
+        let id_pegawai = document.getElementById('id_pegawai').value;
+        let tanggal_keluar = document.getElementById('tanggal_keluar').value;
+        let jam_keluar = document.getElementById('jam_keluar').value;
 
         document.getElementById('take').addEventListener('click', function(){
             Webcam.snap(function (data_uri) {
@@ -90,13 +92,14 @@ if ($m > $radius) {
                     window.location.href = './?route=home';
                     }
                 };
-                xhttp.open("POST", "./?route=absensiAksiIn", true);
+                xhttp.open("POST", "./?route=absensiAksiOut", true);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.send(
                     'photo=' + encodeURIComponent(data_uri) +
                     '&id=' + id +
-                    '&tanggal_masuk=' + tanggal_masuk +
-                    '&jam_masuk=' + jam_masuk
+                    '&id_pegawai=' + id_pegawai +
+                    '&tanggal_keluar=' + tanggal_keluar +
+                    '&jam_keluar=' + jam_keluar
                 );
             });
         });

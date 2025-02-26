@@ -23,7 +23,7 @@ if (isset($_POST["login"])) {
                 $_SESSION['nama'] = $row['nama'];
                 $_SESSION['nip'] = $row['nip'];
                 $_SESSION['jabatan'] = $row['jabatan'];
-                $_SESSION['lokasi_absensi'] = $row['lokasi_absensi'];
+                $_SESSION['lokasi_absen'] = $row['lokasi_absen'];
 
                 if ($row['role'] === 'Admin') {
                     header("Location: ../admin/views/index.php?pesan=berhasil");

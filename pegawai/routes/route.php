@@ -14,8 +14,11 @@ switch ($halaman) {
     case 'absensiKeluar':
         include '../views/absen/create_out.php';
         break;
-    case 'absensiAksi':
-        include '../views/absen/create_act.php';
+    case 'absensiAksiIn':
+        include '../views/absen/act_in.php';
+        break;
+    case 'absensiAksiOut':
+        include '../views/absen/act_out.php';
     case 'rekapHarian':
         include '../views/home.php';
         break;
@@ -28,6 +31,4 @@ switch ($halaman) {
     case 'logout':
         include '../../auth/logout.php';
         break;
-    default:
-        include '../aksi.php';
 }

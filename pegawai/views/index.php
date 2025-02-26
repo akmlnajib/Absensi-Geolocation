@@ -4,7 +4,7 @@ ob_start();
 if (!isset($_SESSION["login"])) {
 	header("Location: ../../auth/login.php?pesan=belum_login");
 } else if ($_SESSION["role"] != 'Pegawai') {
-	header("Location: ../../admin/views/index.php?pesan=tolak_akses");
+	header("Location: ../../admin/views/index.php?pesan=tolak_akses_admin");
 }
 
 require_once('../../config.php');
@@ -75,8 +75,8 @@ if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil') {
 	<!-- Tabler Core -->
 	<script src="<?= base_url('assets/js/tabler.min.js?1738096685') ?>" defer></script>
 	<script src="<?= base_url('assets/js/demo.min.js?1738096685') ?>" defer></script>
-	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<?php
 		include "./layouts/script.php";
 	?>
