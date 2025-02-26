@@ -42,7 +42,7 @@ if ($m > $radius) {
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
-                    <h2 class="page-title"><?= $dlon ?></h2>
+                    <h2 class="page-title">Kehadiran Masuk</h2>
                 </div>
             </div>
         </div>
@@ -58,11 +58,11 @@ if ($m > $radius) {
                             <div class="card">
                                 <div class="card-body text-center">
                                     <center>
-                                        <input type="text" id="id" value="<?= $_SESSION['id'] ?>">
-                                        <input type="text" id="tanggal_masuk" value="<?= $tanggal_masuk ?>">
-                                        <input type="text" id="jam_masuk" value="<?= $jam_masuk ?>">
-                                        <div id="my_camera" style="width:320px; height:240px;"></div>
-                                        <div id="my_result"></div>
+                                        <input type="hidden" id="id" value="<?= $_SESSION['id'] ?>">
+                                        <input type="hidden" id="tanggal_masuk" value="<?= $tanggal_masuk ?>">
+                                        <input type="hidden" id="jam_masuk" value="<?= $jam_masuk ?>">
+                                        <div id="my_camera" class="mb-2" style="width:320px; height:240px;"></div>
+                                        <div id="my_result" class="mb-2"></div>
                                         <button class="btn btn-dark" id="take">Masuk</button>
                                     </center>
                                 </div>

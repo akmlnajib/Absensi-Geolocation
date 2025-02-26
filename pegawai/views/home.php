@@ -36,14 +36,6 @@ while ($lokasi = mysqli_fetch_array($result)) {
         text-align: center;
         justify-content: center;
     }
-    .diagram {
-        display: grid;
-        grid-template-columns: auto auto auto auto;
-        font-size: 20px;
-        text-align: center;
-        font-weight: bold;
-        justify-content: center;
-    }
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
 </script>
@@ -66,7 +58,7 @@ while ($lokasi = mysqli_fetch_array($result)) {
 
         var options = {
             title: 'Kehadiran Pegawai Bulan Ini',
-            pieHole: 0.4 // Untuk tampilan donat (opsional)
+            is3D: true
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -87,7 +79,6 @@ while ($lokasi = mysqli_fetch_array($result)) {
         </div>
     </div>
 </div>
-
 <!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
@@ -140,7 +131,10 @@ while ($lokasi = mysqli_fetch_array($result)) {
                             </center>
                             </p>
                         <?php } else { ?>
-                            <h4> Anda telah absen</h4>
+                            <center>
+                            <i class="fa-solid fa-clipboard-check fa-4x me-2 text-success"></i>
+                                <h4 class="my-4">Anda telah absen</h4>
+                            </center>
                         <?php } ?>
                     </div>
                 </div>
@@ -156,9 +150,15 @@ while ($lokasi = mysqli_fetch_array($result)) {
 
                         if (strtotime($waktu_sekarang) <= strtotime($jam_pulang)) {
                             ?>
-                            Belum waktunya pulang
+                            <center>
+                            <i class="fa-solid fa-ban fa-4x me-2 text-danger"></i>
+                                <h4 class="my-4">Belum waktunya pulang</h4>
+                            </center>
                         <?php } elseif (strtotime($waktu_sekarang) >= strtotime($jam_pulang) && mysqli_num_rows($cek) === 0) { ?>
-                            Silakan melakukan absensi masuk terlebih dahulu
+                            <center>
+                            <i class="fa-solid fa-ban fa-4x me-2 text-warning"></i>
+                                <h4 class="my-4">Silakan melakukan absensi masuk terlebih dahulu</h4>
+                            </center>
                         <?php } else {
                             
                             while ($cek_out = mysqli_fetch_array($cek)) {
@@ -208,13 +208,15 @@ while ($lokasi = mysqli_fetch_array($result)) {
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 mb-3">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-body" class="chart-sparkline chart-sparkline-square">
                         <div id="piechart"></div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-3"></div>
         </div>
     </div>
 </div>
