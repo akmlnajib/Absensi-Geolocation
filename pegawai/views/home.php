@@ -40,7 +40,7 @@ while ($lokasi = mysqli_fetch_array($result)) {
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
 </script>
 <script type="text/javascript">
-    google.charts.load('current', {'packages':['corechart']});
+    google.charts.load('current', { 'packages': ['corechart'] });
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
@@ -83,87 +83,102 @@ while ($lokasi = mysqli_fetch_array($result)) {
 <div class="page-body">
     <div class="container-xl">
         <div class="row">
-        <div class="col-md-6 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title text-center">Absensi Masuk</h3>
-                        <?php
-                        $id_pegawai = $_SESSION['id'];
-                        $tanggal_hari_ini = date("Y-m-d");
-                        $cek = mysqli_query($conn, "SELECT * FROM presensi WHERE id_pegawai = '$id_pegawai' AND tanggal_masuk = '$tanggal_hari_ini' ");
+            <?php
+            $id_pegawai = $_SESSION['id'];
+            date_default_timezone_set('Asia/Jakarta');
+            $jamSekarang = date('H:i:s');
+            $tanggal_hari_ini = date("Y-m-d");
+            $lokasi = mysqli_query($conn, "SELECT * FROM tb_lokasi WHERE nama_lokasi = '$lokasi_presensi'");
+            while ($data = mysqli_fetch_array($lokasi)):
+                $jam_kantor = date('H:i:s', strtotime($data['jam_absen']));
+            endwhile;
+            $jam_mulai = $jam_kantor;
+            $jam_selesai = "24:00:00";
 
-                        if (mysqli_num_rows($cek) === 0) {
-                            ?>
-                            <p class="text-secondary">
-                            <div class="parent_date">
-                                <div id="tanggal_masuk" class="me-2"></div>
-                                <div id="bulan_masuk" class="me-2"></div>
-                                <div id="tahun_masuk" class="me-2"></div>
-                            </div>
-                            <div class="parent_time">
-                                <div id="jam_masuk"></div>
-                                <div>:</div>
-                                <div id="menit_masuk"></div>
-                                <div>:</div>
-                                <div id="detik_masuk"></div>
-                            </div>
-                            <center>
-                                <form action="./?route=absensiMasuk" method="POST">
-                                    <div class="col-sm-6 col-md-4">
-                                        <div class="mb-3">
-                                            <input type="hidden" id="latitude_pegawai_masuk" name="latitude_pegawai_masuk">
-                                            <input type="hidden" id="longitude_pegawai_masuk" name="longitude_pegawai_masuk">
-                                            <input type="hidden" value="<?= $latitude_kantor ?>" name="latitude_kantor">
-                                            <input type="hidden" value="<?= $longitude_kantor ?>" name="longitude_kantor">
-                                            <input type="hidden" value="<?= $radius ?> " name="radius">
-                                            <input type="hidden" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
-                                            <?php
-                                            date_default_timezone_set('Asia/Jakarta');
-                                            $jamSekarang = date('H:i:s');
-                                            ?>
-                                            <input type="hidden" name="jam_masuk" value="<?= $jamSekarang ?>">
+            $cek = mysqli_query($conn, "SELECT * FROM presensi WHERE id_pegawai = '$id_pegawai' AND tanggal_masuk = '$tanggal_hari_ini' ");
 
+            if (mysqli_num_rows($cek) === 0) {
+                if ($jamSekarang >= $jam_mulai && $jamSekarang <= $jam_selesai) {
+                    ?>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title text-center">Absensi Masuk</h3>
+                                <p class="text-secondary">
+                                <div class="parent_date">
+                                    <div id="tanggal_masuk" class="me-2"></div>
+                                    <div id="bulan_masuk" class="me-2"></div>
+                                    <div id="tahun_masuk" class="me-2"></div>
+                                </div>
+                                <div class="parent_time">
+                                    <div id="jam_masuk"></div>
+                                    <div>:</div>
+                                    <div id="menit_masuk"></div>
+                                    <div>:</div>
+                                    <div id="detik_masuk"></div>
+                                </div>
+                                <center>
+                                    <form action="./?route=absensiMasuk" method="POST">
+                                        <div class="col-sm-6 col-md-4">
+                                            <div class="mb-3">
+                                                <input type="hidden" id="latitude_pegawai_masuk" name="latitude_pegawai_masuk">
+                                                <input type="hidden" id="longitude_pegawai_masuk"
+                                                    name="longitude_pegawai_masuk">
+                                                <input type="hidden" value="<?= $latitude_kantor ?>" name="latitude_kantor">
+                                                <input type="hidden" value="<?= $longitude_kantor ?>" name="longitude_kantor">
+                                                <input type="hidden" value="<?= $radius ?> " name="radius">
+                                                <input type="hidden" name="tanggal_masuk" value="<?= date('Y-m-d') ?>">
+                                                <input type="hidden" name="jam_masuk" value="<?= $jamSekarang ?>">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <button type="submit" name="create_masuk" class="btn btn-dark">Absen
-                                        Masuk</button>
-                                </form>
-                            </center>
-                            </p>
-                        <?php } else { ?>
-                            <center>
-                            <i class="fa-solid fa-clipboard-check fa-4x me-2 text-success"></i>
-                                <h4 class="my-4">Anda telah absen</h4>
-                            </center>
-                        <?php } ?>
+                                        <button type="submit" name="create_masuk" class="btn btn-dark">Absen Masuk</button>
+                                    </form>
+                                </center>
+                                </p>
+                                <?php
+                }
+                ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title text-center">Absensi Keluar</h3>
-                        <?php
-                        date_default_timezone_set('Asia/Jakarta');
-                        $jamSekarang = date('H:i:s');
-                        $waktu_sekarang = date('H:i:s');
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body" class="chart-sparkline chart-sparkline-square">
+                            <div id="piechart"></div>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+            <?php
+            date_default_timezone_set('Asia/Jakarta');
+            $jamSekarang = date('H:i:s');
+            $waktu_sekarang = date('H:i:s');
 
-                        if (strtotime($waktu_sekarang) <= strtotime($jam_pulang)) {
-                            ?>
+            if (strtotime($waktu_sekarang) <= strtotime($jam_pulang)) {
+                ?>
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
                             <center>
-                            <i class="fa-solid fa-ban fa-4x me-2 text-danger"></i>
+                                <i class="fa-solid fa-ban fa-4x me-2 text-danger"></i>
                                 <h4 class="my-4">Belum waktunya pulang</h4>
-                            </center>
-                        <?php } elseif (strtotime($waktu_sekarang) >= strtotime($jam_pulang) && mysqli_num_rows($cek) === 0) { ?>
-                            <center>
-                            <i class="fa-solid fa-ban fa-4x me-2 text-warning"></i>
-                                <h4 class="my-4">Silakan melakukan absensi masuk terlebih dahulu</h4>
-                            </center>
-                        <?php } else {
-                            
-                            while ($cek_out = mysqli_fetch_array($cek)) {
-                                if ($cek_out['tanggal_masuk'] && is_null($cek_out['tanggal_keluar']))
-                                { ?>
+                        </div>
+                    </div>
+                </div>
+                </center>
+            <?php } elseif (strtotime($waktu_sekarang) >= strtotime($jam_pulang) && mysqli_num_rows($cek) === 0) {
+
+            } else {
+
+                while ($cek_out = mysqli_fetch_array($cek)) {
+                    if ($cek_out['tanggal_masuk'] && is_null($cek_out['tanggal_keluar'])) { ?>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title text-center">Absensi Keluar</h3>
+
                                     <p class="text-secondary">
                                     <div class="parent_date">
                                         <div id="tanggal_keluar" class="me-2"></div>
@@ -181,7 +196,7 @@ while ($lokasi = mysqli_fetch_array($result)) {
                                         <form action="./?route=absensiKeluar" method="POST">
                                             <div class="col-sm-6 col-md-4">
                                                 <div class="mb-3">
-                                            <input type="hidden" name="id" value="<?= $cek_out['id'] ?>" >
+                                                    <input type="hidden" name="id" value="<?= $cek_out['id'] ?>">
                                                     <input type="hidden" id="latitude_pegawai_masuk" name="latitude_pegawai_masuk">
                                                     <input type="hidden" id="longitude_pegawai_masuk"
                                                         name="longitude_pegawai_masuk">
@@ -198,17 +213,33 @@ while ($lokasi = mysqli_fetch_array($result)) {
                                         </form>
                                     </center>
                                     </p>
-                                    <?php
-                                } else {
-                                    ?>
-                                    Anda Telah melakukan absen
-                                <?php }
-                            }
-                        } ?>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    } else {
+                        ?>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <center>
+                                        <i class="fa-solid fa-clipboard-check fa-4x me-2 text-success"></i>
+                                        <h4 class="my-4">Kehadiran sudah dicatat</h4>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body" class="chart-sparkline chart-sparkline-square">
+                                    <div id="piechart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php }
+                }
+            } ?>
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body" class="chart-sparkline chart-sparkline-square">
@@ -216,7 +247,6 @@ while ($lokasi = mysqli_fetch_array($result)) {
                     </div>
                 </div>
             </div>
-            <div class="col-md-3"></div>
         </div>
     </div>
 </div>
