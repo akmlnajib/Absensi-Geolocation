@@ -3,11 +3,17 @@ $lokasi_absen = $_SESSION['lokasi_absen'];
 $id = $_SESSION['id'];
 
 $lokasi = mysqli_query($conn, "SELECT * FROM tb_lokasi WHERE nama_lokasi = '$lokasi_absen'");
-while($data  = mysqli_fetch_array($lokasi)):
+while ($data = mysqli_fetch_array($lokasi)):
     $jam_kantor = date('H:i:s', strtotime($data['jam_masuk']));
 endwhile;
 
-$query = mysqli_query($conn, "SELECT * FROM presensi WHERE id_pegawai = '$id' ORDER BY tanggal_masuk ASC");
+if(empty($_POST['date_from'])){
+    $query = mysqli_query($conn, "SELECT * FROM presensi WHERE id_pegawai = '$id' ORDER BY tanggal_masuk ASC");
+}else{    
+    $date_from = $_POST['date_from'];
+    $date_to = $_POST['date_to'];
+    $query = mysqli_query($conn, "SELECT * FROM presensi WHERE id_pegawai = '$id' AND tanggal_masuk BETWEEN '$date_from' AND '$date_to' ORDER BY tanggal_masuk ASC");
+}
 $presensiList = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
 $search = isset($_GET['search']) ? strtolower(trim($_GET['search'])) : '';
@@ -54,10 +60,29 @@ $pagedData = array_slice($filteredData, $offset, $limit);
 <!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
+
         <div class="row row-deck row-cards">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body border-bottom py-3">
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    Export Excel
+                                </button>
+                            </div>
+                            <div class="col-md-10">
+                                <form method="POST">
+                                    <div class="input-group">
+                                            <input type="date" class="form-control" name="date_from">   
+                                            <input type="date" class="form-control" name="date_to">
+                                            <button type="submit" class="btn btn-primary">Cari</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <div class="d-flex">
                             <div class="text-secondary">
                                 Show
@@ -85,7 +110,7 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th >Tanggal</th>
+                                    <th>Tanggal</th>
                                     <th class="text-center">Jam Masuk</th>
                                     <th class="text-center">Jam Pulang</th>
                                     <th class="text-center">Total Jam Kerja</th>
@@ -100,14 +125,14 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                 <?php else: ?>
                                     <?php
                                     $no = $offset + 1;
-                                    foreach ($pagedData as $row): 
+                                    foreach ($pagedData as $row):
                                         if (!empty($row['tanggal_keluar']) && !empty($row['jam_keluar'])) {
                                             $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($row['tanggal_masuk'] . ' ' . $row['jam_masuk']));
                                             $jam_tanggal_keluar = date('Y-m-d H:i:s', strtotime($row['tanggal_keluar'] . ' ' . $row['jam_keluar']));
-                                    
+
                                             $timestamp_masuk = strtotime($jam_tanggal_masuk);
                                             $timestamp_keluar = strtotime($jam_tanggal_keluar);
-                                    
+
                                             $hitung = $timestamp_keluar - $timestamp_masuk;
                                             $jam_kerja = floor($hitung / 3600);
                                             $hitung -= $jam_kerja * 3600;
@@ -123,38 +148,41 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                         $terlambat -= $jam_terlambat * 3600;
                                         $menit_terlambat = floor($terlambat / 60);
                                         $detik_terlambat = $terlambat % 60;
-                                    ?>
+                                        ?>
                                         <tr>
                                             <td>
                                                 <div><?= $no++ ?></div>
                                             </td>
                                             <td>
-                                                <div><?= htmlspecialchars(date('d F Y', strtotime($row['tanggal_masuk']))) ?></div>
+                                                <div><?= htmlspecialchars(date('d F Y', strtotime($row['tanggal_masuk']))) ?>
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="text-center"><?= htmlspecialchars($row['jam_masuk']) ?></div>
                                             </td>
                                             <td>
-                                            <?php if ($row['tanggal_keluar'] === NULL) : ?>
-                                                <div class="text-center">00:00:00</div>
-                                            <?php else :?>
-                                                <div class="text-center"><?= htmlspecialchars($row['jam_keluar']) ?></div>
-                                            <?php endif;?>
+                                                <?php if ($row['tanggal_keluar'] === NULL): ?>
+                                                    <div class="text-center">00:00:00</div>
+                                                <?php else: ?>
+                                                    <div class="text-center"><?= htmlspecialchars($row['jam_keluar']) ?></div>
+                                                <?php endif; ?>
                                             </td>
                                             <td>
-                                            <?php if ($row['tanggal_keluar'] === NULL) : ?>
-                                                <div class="text-center">0 Jam 0 Menit</div>
-                                            <?php else :?>
-                                                <div class="text-center"><?= $jam_kerja . ' Jam ' . $menit_kerja . ' Menit' ?></div>
-                                            <?php endif;?>
+                                                <?php if ($row['tanggal_keluar'] === NULL): ?>
+                                                    <div class="text-center">0 Jam 0 Menit</div>
+                                                <?php else: ?>
+                                                    <div class="text-center"><?= $jam_kerja . ' Jam ' . $menit_kerja . ' Menit' ?>
+                                                    </div>
+                                                <?php endif; ?>
                                             </td>
                                             <td>
-                                            <?php if ($terlambat <= 0) : ?>
-                                                <span class="badge bg-success text-white text-center">On Time</span>
-                                            <?php else :?>
-                                                <div class="badge bg-danger text-white text-center"><?= $jam_terlambat . ' Jam ' . $menit_terlambat . ' Menit' ?></div>
-                                            <?php endif;?>
-                                            </td>                                            
+                                                <?php if ($terlambat <= 0): ?>
+                                                    <span class="badge bg-success text-white text-center">On Time</span>
+                                                <?php else: ?>
+                                                    <div class="badge bg-danger text-white text-center">
+                                                        <?= $jam_terlambat . ' Jam ' . $menit_terlambat . ' Menit' ?></div>
+                                                <?php endif; ?>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
@@ -199,6 +227,25 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti
+                dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit
+                tempora totam unde.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
             </div>
         </div>
     </div>
