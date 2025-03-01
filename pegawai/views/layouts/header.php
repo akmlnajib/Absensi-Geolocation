@@ -68,10 +68,11 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
+                            data-bs-auto-close="outside" role="button" aria-expanded="false">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <!-- Download SVG icon from http://tabler.io/icons/icon/home -->
+                                <!-- Download SVG icon from http://tabler.io/icons/icon/star -->
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="currentColor"
                                     class="icon icon-tabler icons-tabler-filled icon-tabler-file-check">
@@ -84,6 +85,18 @@
                                 Rekap Presensi
                             </span>
                         </a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    <a class="dropdown-item" href="./?route=harian">
+                                        Rekap Harian
+                                    </a>
+                                    <a class="dropdown-item" href="./?route=bulanan">
+                                        Rekap Bulanan
+                                        <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                    </a>
+                                </div>
+                            </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="./form-elements.html">

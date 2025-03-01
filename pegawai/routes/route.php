@@ -19,11 +19,11 @@ switch ($halaman) {
         break;
     case 'absensiAksiOut':
         include '../views/absen/act_out.php';
-    case 'rekapHarian':
-        include '../views/home.php';
+    case 'harian':
+        include '../views/rekap/day.php';
         break;
-    case 'rekapBulanan':
-        include '../views/home.php';
+    case 'bulanan':
+        include '../views/rekap/day.php';
         break;
     case 'kH':
         include '../views/home.php';
