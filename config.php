@@ -8,7 +8,7 @@ $conn = mysqli_connect($database_host, $database_username, $database_password, $
 
 function base_url($url =null) {
     
-    $base_url = 'http://localhost/dishub/';
+    $base_url = 'http://localhost/geolocation/';
     if($url != null){
         return $base_url . '/' . $url;
     } else {
