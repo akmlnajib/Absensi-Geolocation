@@ -150,10 +150,10 @@
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
-                                    <a class="dropdown-item" href="./activity.html">
+                                    <a class="dropdown-item" href="./?route=harian">
                                         Rekap Harian
                                     </a>
-                                    <a class="dropdown-item" href="./chat.html">
+                                    <a class="dropdown-item" href="./?route=bulanan">
                                         Rekap Bulanan
                                         <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
                                     </a>
