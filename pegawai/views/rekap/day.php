@@ -8,11 +8,14 @@ while ($data = mysqli_fetch_array($lokasi)):
 endwhile;
 
 if(empty($_POST['date_from'])){
-    $query = mysqli_query($conn, "SELECT * FROM presensi WHERE id_pegawai = '$id' ORDER BY tanggal_masuk ASC");
+    $query = mysqli_query($conn, "SELECT * FROM presensi WHERE id_pegawai = '$id' AND YEAR(tanggal_masuk) = YEAR(NOW()) AND MONTH(tanggal_masuk) = MONTH(NOW()) ORDER BY tanggal_masuk ASC");
+    
+    $tanggal = date('F Y');
 }else{    
     $date_from = $_POST['date_from'];
     $date_to = $_POST['date_to'];
     $query = mysqli_query($conn, "SELECT * FROM presensi WHERE id_pegawai = '$id' AND tanggal_masuk BETWEEN '$date_from' AND '$date_to' ORDER BY tanggal_masuk ASC");
+    $tanggal = date('d F Y', strtotime($date_from)) . ' - ' . date('d F Y', strtotime($date_to));
 }
 $presensiList = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
@@ -104,7 +107,8 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    
+                    <span class="mb-2">Rekap Absensi : <?= $tanggal ?></span>
                     <div class="table-responsive">
                         <table class="table table-vcenter card-table">
                             <thead>
@@ -127,7 +131,7 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                     $no = $offset + 1;
                                     foreach ($pagedData as $row):
                                         if (!empty($row['tanggal_keluar']) && !empty($row['jam_keluar'])) {
-                                            $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($row['tanggal_masuk'] . ' ' . $row['jam_masuk']));
+                                            $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($row['tanggal_masuk'] . ' ' . $jam_kantor));
                                             $jam_tanggal_keluar = date('Y-m-d H:i:s', strtotime($row['tanggal_keluar'] . ' ' . $row['jam_keluar']));
 
                                             $timestamp_masuk = strtotime($jam_tanggal_masuk);
@@ -176,7 +180,7 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                                 <?php endif; ?>
                                             </td>
                                             <td>
-                                                <?php if ($terlambat <= 0): ?>
+                                                <?php if ($jam_terlambat < 0 || $menit_terlambat < 0 || ($jam_terlambat == 0 && $menit_terlambat == 0)): ?>
                                                     <span class="badge bg-success text-white text-center">On Time</span>
                                                 <?php else: ?>
                                                     <div class="badge bg-danger text-white text-center">
@@ -227,6 +231,7 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                         </ul>
                     </div>
                 </div>
+            </div>            
             </div>
         </div>
     </div>
