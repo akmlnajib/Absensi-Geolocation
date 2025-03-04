@@ -68,7 +68,10 @@ if (isset($_POST["login"])) {
     </style>
 </head>
 
-<body class=" d-flex flex-column">
+<body  onload="hide_loading();" class=" d-flex flex-column">
+<div class="loading overpower">
+<div class="loader"></div> 
+</div>
     <script src="<?= base_url('assets/js/demo-theme.min.js?1738096685') ?>"></script>
     <div class="page">
         <div class="container container-tight py-4">

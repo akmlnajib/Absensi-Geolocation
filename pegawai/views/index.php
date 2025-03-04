@@ -45,7 +45,10 @@ if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil') {
 	</style>
 </head>
 
-<body>
+<body onload="hide_loading();">
+<div class="loading overpower">
+<div class="loader"></div> 
+</div>
 	<script src="<?= base_url('assets/js/demo-theme.min.js?1738096685') ?>"></script>
 
 	<div class="page">
