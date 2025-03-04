@@ -84,6 +84,7 @@ while ($lokasi = mysqli_fetch_array($result)) {
     <div class="container-xl">
         <div class="row">
             <?php
+
             $id_pegawai = $_SESSION['id'];
             date_default_timezone_set('Asia/Jakarta');
             $jamSekarang = date('H:i:s');

@@ -4,7 +4,7 @@ ob_start();
 if (!isset($_SESSION["login"])) {
 	header("Location: ../../auth/login.php?pesan=belum_login");
 } else if ($_SESSION["role"] != 'Admin') {
-	header("Location: ../../pegawai/views/index.php?pesan=tolak_akses_admin");
+	header("Location: ../../pegawai/views/404.php");
 }
 
 require_once('../../config.php');
@@ -50,7 +50,6 @@ if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil') {
 <div class="loader"></div> 
 </div>
 
-
 	<script src="<?= base_url('assets/js/demo-theme.min.js?1738096685') ?>"></script>
 	<div class="page">
 		<?php
@@ -59,12 +58,6 @@ if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil') {
 		<div class="page-wrapper">
 			<?php
 			include "../routes/route.php";
-
-			if (isset($_GET['pesan'])) {
-				if ($_GET['pesan'] == 'tolak_akses') {
-					$_SESSION['gagal'] = "403 Halaman Tidak dapat diakses";
-				}
-			}
 			?>
 
 			<?php

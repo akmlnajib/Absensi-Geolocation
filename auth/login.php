@@ -26,10 +26,10 @@ if (isset($_POST["login"])) {
                 $_SESSION['lokasi_absen'] = $row['lokasi_absen'];
 
                 if ($row['role'] === 'Admin') {
-                    header("Location: ../admin/views/index.php?pesan=berhasil");
+                    header("Location: ../admin/index.php?pesan=berhasil");
                     exit();
                 }else {
-                    header("Location: ../pegawai/views/index.php?pesan=berhasil");
+                    header("Location: ../pegawai/index.php?pesan=berhasil");
                 }
             }else {
                 $_SESSION["gagal"] = "Akun anda belum aktif, Silakan coba lagi";

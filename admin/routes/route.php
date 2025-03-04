@@ -59,15 +59,15 @@ switch ($halaman) {
     case 'hapusPegawai':
         include '../views/pegawai/delete.php';
         break;
-    case 'kH':
-        include '../views/home.php';
-        break;
     case 'rekap':
         include '../views/rekap/day.php';
+        break;
+    case 'error':
+        include '../views/404.php';
         break;
     case 'logout':
         include '../../auth/logout.php';
         break;
     default:
-        include '404.php';
+        include '../404.php';
 }

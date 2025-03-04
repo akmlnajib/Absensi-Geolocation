@@ -1,5 +1,5 @@
 <?php
-$halaman = htmlspecialchars($_GET['route'] ?? ''); // Pastikan nilai default adalah string
+$halaman = htmlspecialchars($_GET['route'] ?? '');
 
 switch ($halaman) {
     case '':
@@ -19,16 +19,18 @@ switch ($halaman) {
         break;
     case 'absensiAksiOut':
         include '../views/absen/act_out.php';
-    case 'harian':
+    case 'rekap':
         include '../views/rekap/day.php';
         break;
     case 'bulanan':
         include '../views/rekap/day.php';
         break;
-    case 'kH':
-        include '../views/home.php';
+    case 'error':
+        include '../views/404.php';
         break;
     case 'logout':
         include '../../auth/logout.php';
         break;
+    default:
+        include '../404.php';
 }
