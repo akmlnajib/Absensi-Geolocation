@@ -62,11 +62,8 @@ switch ($halaman) {
     case 'kH':
         include '../views/home.php';
         break;
-    case 'harian':
+    case 'rekap':
         include '../views/rekap/day.php';
-        break;
-    case 'bulanan':
-        include '../views/rekap/month.php';
         break;
     case 'logout':
         include '../../auth/logout.php';

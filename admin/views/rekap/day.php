@@ -2,13 +2,20 @@
 $lokasi_absen = $_SESSION['lokasi_absen'];
 $id = $_SESSION['id'];
 
-if(empty($_POST['date_from'])){
-    $query = mysqli_query($conn, "SELECT presensi.* ,pegawai.nama, pegawai.lokasi_absen FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id WHERE tanggal_masuk ORDER BY tanggal_masuk ASC");
-}else{    
+if (empty($_POST['date_from'])) {
+    $query = mysqli_query($conn, "SELECT presensi.*, pegawai.nama, pegawai.lokasi_absen 
+        FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id WHERE YEAR(tanggal_masuk) = YEAR(NOW()) AND MONTH(tanggal_masuk) = MONTH(NOW()) 
+        ORDER BY tanggal_masuk ASC");
+     $tanggal = date('F Y');
+} else {
     $date_from = $_POST['date_from'];
     $date_to = $_POST['date_to'];
-    $query = mysqli_query($conn, "SELECT presensi.*,  pegawai.nama, pegawai.lokasi_absen FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id  WHERE tanggal_masuk BETWEEN '$date_from' AND '$date_to' ORDER BY tanggal_masuk ASC");
+    $query = mysqli_query($conn, "SELECT presensi.*, pegawai.nama, pegawai.lokasi_absen FROM presensi JOIN pegawai ON presensi.id_pegawai = pegawai.id WHERE tanggal_masuk BETWEEN '$date_from' AND '$date_to' ORDER BY tanggal_masuk ASC
+    ");
+    $tanggal = date('d F Y', strtotime($date_from)) . ' - ' . date('d F Y', strtotime($date_to));
 }
+
+
 $presensiList = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
 $search = isset($_GET['search']) ? strtolower(trim($_GET['search'])) : '';
@@ -39,14 +46,8 @@ $pagedData = array_slice($filteredData, $offset, $limit);
             <div class="col">
                 <!-- Page pre-title -->
                 <h2 class="page-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                        <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
-                    </svg>
-                    Rekap Absensi Harian
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-squares-selected"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 10a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M8 14.5l6.492 -6.492" /><path d="M13.496 20l6.504 -6.504z" /><path d="M8.586 19.414l10.827 -10.827" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+                    Rekap Absensi
                 </h2>
             </div>
         </div>
@@ -60,25 +61,27 @@ $pagedData = array_slice($filteredData, $offset, $limit);
             <div class="col-12">
                 <div class="card">
                     <div class="card-body border-bottom py-3">
-
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">
+                                    <i class="fa-solid fa-file-export me-2"></i>
                                     Export Excel
                                 </button>
                             </div>
+                            
                             <div class="col-md-10">
                                 <form method="POST">
                                     <div class="input-group">
-                                            <input type="date" class="form-control" name="date_from">   
+                                            <input type="date" id="datepicker-default" class="form-control" name="date_from">
+                                               
                                             <input type="date" class="form-control" name="date_to">
                                             <button type="submit" class="btn btn-primary">Cari</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <div class="d-flex">
+                        <div class="d-flex mb-2">
                             <div class="text-secondary">
                                 Show
                                 <div class="mx-2 d-inline-block">
@@ -99,8 +102,9 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="table-responsive">
+
+                    <span class="mb-2">Rekap Absensi : <?= $tanggal ?></span>
+                    <div class="table-responsive mt-2">
                         <table class="table table-vcenter card-table">
                             <thead>
                                 <tr>
@@ -113,7 +117,7 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tbody">
                                 <?php if (count($pagedData) === 0): ?>
                                     <tr>
                                         <td colspan="6" class="text-center">Tidak ada data</td>
@@ -127,7 +131,7 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                         $jam_kantor = date('H:i:s', strtotime($data['jam_masuk']));
                                     endwhile;
                                         if (!empty($row['tanggal_keluar']) && !empty($row['jam_keluar'])) {
-                                            $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($row['tanggal_masuk'] . ' ' . $row['jam_masuk']));
+                                            $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($row['tanggal_masuk'] . ' ' . $jam_kantor));
                                             $jam_tanggal_keluar = date('Y-m-d H:i:s', strtotime($row['tanggal_keluar'] . ' ' . $row['jam_keluar']));
 
                                             $timestamp_masuk = strtotime($jam_tanggal_masuk);
@@ -178,7 +182,7 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                                 <?php endif; ?>
                                             </td>
                                             <td>
-                                                <?php if ($terlambat <= 0): ?>
+                                                <?php if ($jam_terlambat < 0 || $menit_terlambat < 0 || ($jam_terlambat == 0 && $menit_terlambat == 0)): ?>
                                                     <span class="badge bg-success text-white text-center">On Time</span>
                                                 <?php else: ?>
                                                     <div class="badge bg-danger text-white text-center">
@@ -229,6 +233,7 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                         </ul>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
     </div>
@@ -236,19 +241,22 @@ $pagedData = array_slice($filteredData, $offset, $limit);
 <div class="modal" id="exampleModal" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci animi beatae delectus deleniti
-                dolorem eveniet facere fuga iste nemo nesciunt nihil odio perspiciatis, quia quis reprehenderit sit
-                tempora totam unde.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-            </div>
+            <form action="rekap/export.php" method="POST">
+                <div class="modal-body">
+                <div class="mb-3">
+                    <label for="">Tanggal Awal</label>
+                    <input type="date" name="date_from" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="">Tanggal Akhir</label>
+                    <input type="date" name="date_to" class="form-control">
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="" class="btn btn-primary" data-bs-dismiss="modal">Export</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

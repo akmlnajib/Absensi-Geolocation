@@ -40,13 +40,18 @@ if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil') {
 	<link href="<?= base_url('assets/css/tabler-vendors.min.css?1738096685') ?>" rel="stylesheet" />
 	<link href="<?= base_url('assets/css/demo.min.css?1738096685') ?>" rel="stylesheet" />
 	<style>
+		
 		@import url('https://rsms.me/inter/inter.css');
 	</style>
 </head>
 
-<body>
-	<script src="<?= base_url('assets/js/demo-theme.min.js?1738096685') ?>"></script>
+<body onload="hide_loading();">
+<div class="loading overpower">
+<div class="loader"></div> 
+</div>
 
+
+	<script src="<?= base_url('assets/js/demo-theme.min.js?1738096685') ?>"></script>
 	<div class="page">
 		<?php
 		include "./layouts/header.php";
@@ -68,6 +73,7 @@ if (isset($_GET['pesan']) && $_GET['pesan'] == 'berhasil') {
 		</div>
 	</div>
 	<!-- Libs JS -->
+	 <script src="script.js"></script>
 	<script src="<?= base_url('assets/libs/apexcharts/dist/apexcharts.min.js?1738096685') ?>" defer></script>
 	<script src="<?= base_url('assets/libs/jsvectormap/dist/jsvectormap.min.js?1738096685') ?>" defer></script>
 	<script src="<?= base_url('assets/libs/jsvectormap/dist/maps/world.js?1738096685') ?>" defer></script>
