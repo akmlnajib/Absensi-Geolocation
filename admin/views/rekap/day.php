@@ -63,9 +63,9 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                     <div class="card-body border-bottom py-3">
                         <div class="row mb-2">
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-6 mb-3" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">
-                                    <i class="fa-solid fa-file-export me-2"></i>
+                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-file-type-xls"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M4 15l4 6" /><path d="M4 21l4 -6" /><path d="M17 20.25c0 .414 .336 .75 .75 .75h1.25a1 1 0 0 0 1 -1v-1a1 1 0 0 0 -1 -1h-1a1 1 0 0 1 -1 -1v-1a1 1 0 0 1 1 -1h1.25a.75 .75 0 0 1 .75 .75" /><path d="M11 15v6h3" /></svg>
                                     Export Excel
                                 </button>
                             </div>
@@ -76,7 +76,9 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                             <input type="date" id="datepicker-default" class="form-control" name="date_from">
                                                
                                             <input type="date" class="form-control" name="date_to">
-                                            <button type="submit" class="btn btn-primary">Cari</button>
+                                            <button type="submit" class="btn btn-primary">
+                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-filter"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z" /></svg>
+                                            Filter</button>
                                     </div>
                                 </form>
                             </div>
@@ -130,18 +132,22 @@ $pagedData = array_slice($filteredData, $offset, $limit);
                                     while ($data = mysqli_fetch_array($lokasi)):
                                         $jam_kantor = date('H:i:s', strtotime($data['jam_masuk']));
                                     endwhile;
-                                        if (!empty($row['tanggal_keluar']) && !empty($row['jam_keluar'])) {
-                                            $jam_tanggal_masuk = date('Y-m-d H:i:s', strtotime($row['tanggal_masuk'] . ' ' . $jam_kantor));
-                                            $jam_tanggal_keluar = date('Y-m-d H:i:s', strtotime($row['tanggal_keluar'] . ' ' . $row['jam_keluar']));
+                                    if (!empty($row['tanggal_keluar']) && !empty($row['jam_keluar']) && !empty($row['tanggal_masuk']) && !empty($row['jam_masuk'])) {
+                                        $jam_masuk = strtotime($row['tanggal_masuk'] . ' ' . $row['jam_masuk']);
+                                        $jam_keluar = strtotime($row['tanggal_keluar'] . ' ' . $row['jam_keluar']);
+                                        $jam_kantor_masuk = strtotime($row['tanggal_masuk'] . ' ' . $jam_kantor);
 
-                                            $timestamp_masuk = strtotime($jam_tanggal_masuk);
-                                            $timestamp_keluar = strtotime($jam_tanggal_keluar);
-
-                                            $hitung = $timestamp_keluar - $timestamp_masuk;
-                                            $jam_kerja = floor($hitung / 3600);
-                                            $hitung -= $jam_kerja * 3600;
-                                            $menit_kerja = floor($hitung / 60);
-                                        }
+                                        $timestamp_masuk = ($jam_masuk < $jam_kantor_masuk) ? $jam_kantor_masuk : $jam_masuk;
+                                        $timestamp_keluar = $jam_keluar;
+                                    
+                                        // Hitung selisih waktu kerja
+                                        $hitung = max(0, $timestamp_keluar - $timestamp_masuk);
+                                        $jam_kerja = floor($hitung / 3600);
+                                        $menit_kerja = floor(($hitung % 3600) / 60);
+                                    } else {
+                                        $jam_kerja = 0;
+                                        $menit_kerja = 0;
+                                    }
 
                                         $jam_masuk = !empty($row['jam_masuk']) ? date('H:i:s', strtotime($row['jam_masuk'])) : null;
                                         $timestamp_jam_pegawai = $jam_masuk ? strtotime($jam_masuk) : null;

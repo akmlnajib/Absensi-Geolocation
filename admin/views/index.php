@@ -4,7 +4,7 @@ ob_start();
 if (!isset($_SESSION["login"])) {
 	header("Location: ../../auth/login.php?pesan=belum_login");
 } else if ($_SESSION["role"] != 'Admin') {
-	header("Location: ../../pegawai/views/404.php");
+	header("Location: ../../pegawai/views/?route=error");
 }
 
 require_once('../../config.php');
